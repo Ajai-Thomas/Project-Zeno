@@ -1,16 +1,16 @@
-# JARVIS — Voice-Activated Desktop Assistant: Project Write-Up
+# ZENO — Voice-Activated Desktop Assistant: Project Write-Up
 
 &#32;
 
 ## Overview and goals
 
-JARVIS is a Python desktop assistant that wakes on a spoken name, understands a request, performs it on the computer, and replies by voice. It targets everyday chores: opening apps, searching and reading the web, controlling the system, and handling phone calls through the desktop.
+ZENO is a Python desktop assistant that wakes on a spoken name, understands a request, performs it on the computer, and replies by voice. It targets everyday chores: opening apps, searching and reading the web, controlling the system, and handling phone calls through the desktop.
 
 **Problem.** Small tasks like launching a program, looking something up, or adjusting volume each take a few clicks and break focus. A hands-free assistant removes that friction and is a strong portfolio project because it touches audio, AI, automation, and OS integration.
 
 **Goals**
 
-1. Respond to a wake word ("Hey Jarvis") within about 1 second, with no button press.
+1. Respond to a wake word ("Hey Zeno") within about 1 second, with no button press.
 2. Think dynamically and learn from use: reason about any phrasing, with no hand-written replies or command lists.
 3. Understand English, Malayalam, and Manglish ("Spotify open aakku").
 4. Act only through allow-listed tools, built on MCP so new abilities plug in without rewriting the core.
@@ -40,7 +40,7 @@ The first release (MVP) covers the tasks that work reliably on any PC; calls and
 | Files, email, calendar | "Find my resume PDF", "What's on today?" | Phase 2 | Open-source MCP servers (filesystem, Gmail, Google Calendar) |
 | Media control | "Pause", "Next song" | Phase 2 | Media keys via `keyboard` |
 | Malayalam and Manglish | "Spotify open aakku" | Phase 3 | Language detection, then Whisper or IndicConformer (see *Core modules*) |
-| Fast, interruptible replies | "Jarvis, stop" | Phase 3 | Streaming speech-to-text and TTS, echo cancellation |
+| Fast, interruptible replies | "Zeno, stop" | Phase 3 | Streaming speech-to-text and TTS, echo cancellation |
 | Free cloud helper | Long multi-step requests | Phase 3 | Gemini or Groq free tier through the same code (see *Running it for free*) |
 | Multi-step browser tasks | "Find the cheapest flight to Delhi on Friday" | Phase 4 | Playwright MCP server driven by the agent loop |
 | Screen awareness | "What's this error on my screen?" | Phase 4 | Screenshot sent to a vision-capable model |
@@ -53,7 +53,7 @@ The first release (MVP) covers the tasks that work reliably on any PC; calls and
 
 Every request follows one loop: hear the wake word, transcribe the command, let the Brain choose a skill, run it, and speak the result.
 
-&#91;embedded content: JARVIS architecture · wake → understand → act → speak\]
+&#91;embedded content: ZENO architecture · wake → understand → act → speak\]
 
 The Brain handles simple commands with rules and sends everything else to the LLM, which can only act through the allow-listed skills below it.
 
@@ -89,7 +89,7 @@ Yes. The default setup needs under 1 GB of disk and runs on most laptops with 8 
 
 Every profile fits. Run **Offline** with Malayalam as the everyday setup: the local Qwen3 4B brain is free and private, and the free cloud tier steps in only for hard tasks when online.
 
-| Resource | This laptop | JARVIS needs (Malayalam / Offline) | Verdict |
+| Resource | This laptop | ZENO needs (Malayalam / Offline) | Verdict |
 | --- | --- | --- | --- |
 | Processor | Intel Core i5-1340P (13th gen), 12 cores: 4 performance + 8 efficiency, 16 threads | Any x86 Intel or AMD chip | Works as written; no ARM workarounds needed |
 | RAM | 16 GB installed, 5200 MT/s | \~1.5 GB / \~5–6 GB, on top of Windows and a browser using \~6–8 GB | Fits; use Qwen3 4B for live replies and 8B only for nightly reflection |
@@ -101,7 +101,7 @@ Expected speed on this CPU (approximate): Whisper `base` transcribes a 3–5 sec
 
 ### Setup profiles
 
-JARVIS checks the laptop's RAM on first run, suggests a profile, and downloads only the models that profile needs.
+ZENO checks the laptop's RAM on first run, suggests a profile, and downloads only the models that profile needs.
 
 | Profile | What runs locally | Disk (approx.) | RAM needed | Works on | Trade-off |
 | --- | --- | --- | --- | --- | --- |
@@ -133,14 +133,14 @@ Sizes for wake word, Whisper base/small on disk, and the Python install are esti
 
 ### Honest limits
 
-- **Small local LLMs struggle with tools.** CPU-only laptops with 8–12 GB RAM run a 3B model at roughly 16 tokens per second, and models that size can [invent extra tool calls](https://github.com/Djtony707/TITAN/wiki/Troubleshooting). That is why JARVIS hands hard tasks to the free cloud tier when it is online.
+- **Small local LLMs struggle with tools.** CPU-only laptops with 8–12 GB RAM run a 3B model at roughly 16 tokens per second, and models that size can [invent extra tool calls](https://github.com/Djtony707/TITAN/wiki/Troubleshooting). That is why ZENO hands hard tasks to the free cloud tier when it is online.
 - **Old dual-core laptops** can run Lite but transcription will lag; use Whisper `tiny` or a cloud speech API there.
-- **The mic matters more than the CPU.** A cheap headset beats a laptop's built-in mic for accuracy and stops JARVIS hearing itself.
+- **The mic matters more than the CPU.** A cheap headset beats a laptop's built-in mic for accuracy and stops ZENO hearing itself.
 - **Windows first.** App discovery and call bridging are Windows-specific; macOS and Linux need their own versions of those two skills.
 
 ## Running it for free
 
-Every part of JARVIS can be built and run at zero cost, with no credit card. The brain runs on the laptop through Ollama by default, and a free cloud tier is an optional helper for harder tasks.
+Every part of ZENO can be built and run at zero cost, with no credit card. The brain runs on the laptop through Ollama by default, and a free cloud tier is an optional helper for harder tasks.
 
 | What | Free choice | The catch |
 | --- | --- | --- |
@@ -181,16 +181,16 @@ After the wake word, record until VAD detects about 0.8 s of silence (cap at 10 
 
 Two layers keep it fast and cheap:
 
-1. **Fast path.** A cache of shortcuts JARVIS learned itself: a phrase that led to the same action 3 times runs instantly with no AI call. Nothing here is hand-written.
+1. **Fast path.** A cache of shortcuts ZENO learned itself: a phrase that led to the same action 3 times runs instantly with no AI call. Nothing here is hand-written.
 2. **LLM path.** Anything else goes to the LLM with a list of *tools* (skills) described as JSON schemas. The model either answers in text or returns a tool call such as `open_app(name="spotify")`. The router runs the tool, sends the result back, and the model writes the spoken reply.
 
-The system prompt tells the model it is JARVIS, to keep replies under two sentences for speech, to ask before risky actions, and to save what it learns. The prompt is rebuilt every turn with your stored facts and routines, so its behaviour changes as its memory grows.
+The system prompt tells the model it is ZENO, to keep replies under two sentences for speech, to ask before risky actions, and to save what it learns. The prompt is rebuilt every turn with your stored facts and routines, so its behaviour changes as its memory grows.
 
 ### 4. Skills (action executors)
 
-Each skill is a Python function with a name, description, parameter schema, and a `risk` level. Skills register themselves in a registry so new ones are a single file. JARVIS adds its own routines on top of these (see Self-learning). Starter skills: `open_app`, `close_app`, `web_search`, `open_url`, `set_volume`, `screenshot`, `set_timer`, `get_time`, `lock_pc`, `answer_call`, `decline_call`.
+Each skill is a Python function with a name, description, parameter schema, and a `risk` level. Skills register themselves in a registry so new ones are a single file. ZENO adds its own routines on top of these (see Self-learning). Starter skills: `open_app`, `close_app`, `web_search`, `open_url`, `set_volume`, `screenshot`, `set_timer`, `get_time`, `lock_pc`, `answer_call`, `decline_call`.
 
-**Built on MCP.** JARVIS is an MCP client: each group of skills is an MCP server (apps, system, timers) and ready-made servers add files, browser, Gmail, and calendar with no new code. The allow-list and risk level live in JARVIS's config, not in the servers, so a new server gets no access until you approve its tools.
+**Built on MCP.** ZENO is an MCP client: each group of skills is an MCP server (apps, system, timers) and ready-made servers add files, browser, Gmail, and calendar with no new code. The allow-list and risk level live in ZENO's config, not in the servers, so a new server gets no access until you approve its tools.
 
 ### 5. Text-to-speech
 
@@ -204,7 +204,7 @@ Piper turns the reply into audio in well under a second on CPU. Speak the first 
 
 ## Self-learning and dynamic thinking
 
-JARVIS has no scripted replies and no command list: an LLM reasons through every request, and its memory grows from each conversation so it gets better without you feeding it rules.
+ZENO has no scripted replies and no command list: an LLM reasons through every request, and its memory grows from each conversation so it gets better without you feeding it rules.
 
 It learns the way today's AI agents do: by building memory and reusable routines, not by retraining the model. That is fast, cheap, works on a laptop, and you can always see or undo what it learned.
 
@@ -214,7 +214,7 @@ It learns the way today's AI agents do: by building memory and reusable routines
 
 For each request the model plans, calls a tool, reads the result, and decides the next step until the job is done. Nobody writes the flow in advance.
 
-Example: *"Send the PDF I downloaded today to Rahul on WhatsApp."* JARVIS searches Downloads for today's PDF, opens WhatsApp, looks up who Rahul is in memory, asks "Send invoice.pdf to Rahul?", and sends it. If a step fails, the error goes back to the model, which tries another way.
+Example: *"Send the PDF I downloaded today to Rahul on WhatsApp."* ZENO searches Downloads for today's PDF, opens WhatsApp, looks up who Rahul is in memory, asks "Send invoice.pdf to Rahul?", and sends it. If a step fails, the error goes back to the model, which tries another way.
 
 To make this work, give it **general tools** instead of one tool per task: open any installed app, search files, browse (Playwright), read the screen (screenshot + vision model), click and type through UI automation, and ask you a question. Combining these, it handles requests you never planned for.
 
@@ -248,15 +248,15 @@ To make this work, give it **general tools** instead of one tool per task: open 
 
 Calls are the hardest feature because a PC has no phone line of its own; the assistant has to work through a bridge app that does. Calls are optional and come last (Phase 4): they are the most fragile feature and add the least to the project, so build them only once everything else is solid.
 
-| Route | What it gives you | How JARVIS controls it | Effort |
+| Route | What it gives you | How ZENO controls it | Effort |
 | --- | --- | --- | --- |
 | Microsoft Phone Link (Windows + Android/iPhone) | Your real phone number, ringing on the PC | No public API: watch for the incoming-call toast and click Answer/Decline with `pywinauto` (UI automation) | Medium, can break on app updates |
 | KDE Connect (Windows/Linux + Android) | Call notifications, mute media on ring, send SMS | Read events via its D-Bus/CLI; answering itself still happens on the phone | Low, but partial |
 | Android companion app (Tasker or custom app + ADB over Wi-Fi) | Full control of your real number | PC sends a command; phone runs `input keyevent KEYCODE_CALL` / `ENDCALL` | Medium to high |
-| VoIP number (Twilio, Plivo, Exotel) | A separate cloud number JARVIS fully controls | Webhooks + APIs; can answer, screen callers, take messages | Paid per minute, so not used |
+| VoIP number (Twilio, Plivo, Exotel) | A separate cloud number ZENO fully controls | Webhooks + APIs; can answer, screen callers, take messages | Paid per minute, so not used |
 | WhatsApp / Teams / Zoom calls | Calls already on the desktop | Hotkeys or `pywinauto` on the app window | Low to medium |
 
-**Recommended path.** Start with Phone Link + `pywinauto`: it uses your real number and needs no phone-side setup. JARVIS announces "Call from Rahul — answer or decline?", waits for a spoken reply (no wake word needed in that window), then clicks the button. Move to a companion Android app later if the UI automation proves flaky.
+**Recommended path.** Start with Phone Link + `pywinauto`: it uses your real number and needs no phone-side setup. ZENO announces "Call from Rahul — answer or decline?", waits for a spoken reply (no wake word needed in that window), then clicks the button. Move to a companion Android app later if the UI automation proves flaky.
 
 Always announce the caller and wait for an explicit "answer"; never auto-answer.
 
@@ -269,7 +269,7 @@ An assistant that can click, type, and run programs needs firm limits, because a
 - **Treat web content as data.** Text pulled from websites is summarised, never followed as instructions, to block prompt injection.
 - **Local-first audio.** Nothing leaves the machine before the wake word fires. Show a tray indicator whenever the mic is recording.
 - **Secrets in environment variables.** Keep API keys out of code and out of Git (`.env` + `.gitignore`).
-- **Mute and kill switch.** A hotkey (e.g. `Ctrl+Alt+J`) mutes listening; saying "Jarvis, stop" cancels any running action.
+- **Mute and kill switch.** A hotkey (e.g. `Ctrl+Alt+Z`) mutes listening; saying "Zeno, stop" cancels any running action.
 - **Action log.** Every executed skill is written to SQLite with time, command text, and result, so you can audit what happened.
 
 ## Implementation roadmap
@@ -297,7 +297,7 @@ class Utterance:
 
 def listen() -> Utterance: ...                 # Voice: wake word, record, transcribe
 def speak(text: str, lang: str = "en") -> None: ...   # Voice
-def stop_speaking() -> None: ...               # Voice: for "Jarvis, stop"
+def stop_speaking() -> None: ...               # Voice: for "Zeno, stop"
 def think(u: Utterance) -> str: ...            # Brain: reason, act, learn, return the reply
 def status(event: str) -> None: ...            # Brain sends, Voice's overlay shows it
 ```
@@ -325,7 +325,7 @@ Phase 2 is heavier for the Brain and Phase 3 for the Voice, so whoever is ahead 
 
 There is no hand-written starter code. Instead, give this write-up to Claude Code in plan mode: it reads the design, proposes the structure and the split of work between you, and builds the shared base only after you approve. Each of you then builds your own side in your own session.
 
-Claude Code is the one paid tool here: it needs a Claude Pro plan. JARVIS itself stays free to run. If only one of you has Pro, that person runs the kickoff, and the other can use the free coding help listed in *Running it for free*.
+Claude Code is the one paid tool here: it needs a Claude Pro plan. ZENO itself stays free to run. If only one of you has Pro, that person runs the kickoff, and the other can use the free coding help listed in *Running it for free*.
 
 ### Before you start
 
@@ -338,7 +338,7 @@ Claude Code is the one paid tool here: it needs a Claude Pro plan. JARVIS itself
 Paste this into Claude Code in plan mode:
 
 ```text
-Read PLAN.md fully. It is the design for JARVIS, a free, voice-activated desktop assistant
+Read PLAN.md fully. It is the design for ZENO, a free, voice-activated desktop assistant
 for Windows 11 (Intel i5-1340P, 16 GB RAM, no NVIDIA GPU). Two people are building it:
 - Person A owns the Voice side: wake word, speech-to-text, text-to-speech, Malayalam speech,
   status overlay, packaging.
@@ -430,7 +430,7 @@ Measure the assistant on a fixed set of spoken commands so every change can be c
 **Future enhancements**
 
 - More Indian languages (Tamil, Hindi, Kannada) using the same IndicConformer and Piper pipeline.
-- A custom "Jarvis" voice trained with Piper on a few hours of recordings.
+- A custom "Zeno" voice trained with Piper on a few hours of recordings.
 - Morning briefing: weather, calendar, and email read out on request.
 - Smart home control through a Home Assistant MCP server.
-- A phone companion app so JARVIS works away from the desk.
+- A phone companion app so ZENO works away from the desk.
