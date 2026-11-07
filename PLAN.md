@@ -316,7 +316,7 @@ Phase 2 is heavier for the Brain and Phase 3 for the Voice, so whoever is ahead 
 **How to work together**
 
 - **One GitHub repo where `main` always runs.** Each task gets its own branch and is merged through a pull request that the other person reviews.
-- **Separate folders to avoid merge conflicts.** Voice owns `core/wake.py`, `core/stt.py`, `core/tts.py`, and a new `ui/` folder. Brain owns `core/brain.py`, `core/memory.py`, `skills/`, and a new `mcp/` folder. Shared files (`main.py`, `core/interfaces.py`, `config.yaml`) change only after a quick check with each other.
+- **Separate folders to avoid merge conflicts.** Voice owns `core/wake.py`, `core/stt.py`, `core/tts.py`, and a new `ui/` folder. Brain owns `core/brain.py`, `core/memory.py`, `skills/`, and a new `mcp_servers/` folder (not `mcp/`, which would shadow the `mcp` package). Shared files (`main.py`, `core/interfaces.py`, `config.yaml`) change only after a quick check with each other.
 - **The same instructions for both AI coding assistants.** Keep this write-up as `PLAN.md` and put the interface rules and folder ownership in `CLAUDE.md`, so both of you get code that fits the same design.
 - **Integrate weekly, not just at phase end.** Merge both sides into `main.py` at least once a week and do a short sync twice a week.
 - **One free key each.** Each person creates their own free Gemini or Groq key, so you don't share one daily limit.

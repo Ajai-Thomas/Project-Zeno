@@ -1,0 +1,27 @@
+# Zeno settings. SHARED FILE. Never put API keys here; use .env (see .env.example).
+
+wake:
+  # Voice task A5 trains a custom "Hey Zeno" model (assets/wakeword/hey_zeno.onnx).
+  # Until it exists, use openWakeWord's pre-trained "hey_jarvis" model as a placeholder.
+  model: hey_jarvis
+  threshold: 0.5
+
+stt:
+  model: base          # faster-whisper; "small" for Manglish
+  compute_type: int8
+  device: cpu
+
+tts:
+  voice_en: en_US-lessac-medium
+  voice_ml: ml_IN-meera-medium
+
+brain:
+  ollama_url: http://localhost:11434/v1
+  model: qwen3:4b-instruct-2507-q4_K_M   # non-thinking build; thinking mode is too slow on CPU
+  max_steps: 4
+  history_turns: 10
+  keep_alive: 30m
+
+cloud:                 # optional free helper for hard tasks; keys come from environment variables
+  enabled: false
+  provider: gemini     # or groq

@@ -1,9 +1,23 @@
-﻿# Secrets and local state
+﻿# Secrets
 .env
 .env.*
+!.env.example
 
 # Python
 __pycache__/
 *.pyc
 .venv/
 venv/
+.pytest_cache/
+
+# Runtime data: models, memory database (personal facts), logs, recordings
+data/
+*.sqlite
+*.sqlite3
+*.db
+*.log
+
+# Packaging
+build/
+dist/
+*.spec
