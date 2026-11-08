@@ -13,7 +13,7 @@ Run commands from the repo root with the `.venv` active.
 
 ## Person A · Voice (Ajai-Thomas)
 
-- [ ] **A1 · Mic capture.** `core/audio.py`: 16 kHz mono stream in 80 ms chunks (`sounddevice`).
+- [x] **A1 · Mic capture.** `core/audio.py`: 16 kHz mono stream in 80 ms chunks (`sounddevice`).
       Test: `python -m core.audio --check` records 3 s and shows a live level meter.
 - [ ] **A2 · Command recorder.** `core/vad.py`: Silero VAD (ONNX file loaded with `onnxruntime`, not the torch package); record until 0.8 s of silence, cap 10 s.
       Test: `python -m core.vad` saves `data/last.wav` and prints its length; unit test on a synthetic clip.
