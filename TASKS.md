@@ -17,7 +17,7 @@ Run commands from the repo root with the `.venv` active.
       Test: `python -m core.audio --check` records 3 s and shows a live level meter.
 - [x] **A2 · Command recorder.** `core/vad.py`: Silero VAD (ONNX file loaded with `onnxruntime`, not the torch package); record until 0.8 s of silence, cap 10 s.
       Test: `python -m core.vad` saves `data/last.wav` and prints its length; unit test on a synthetic clip.
-- [ ] **A3 · Speech-to-text.** `core/stt.py`: faster-whisper `base`, int8, CPU; WAV in, `Utterance` out; models download to `data/models/`.
+- [x] **A3 · Speech-to-text.** `core/stt.py`: faster-whisper `base`, int8, CPU; WAV in, `Utterance` out; models download to `data/models/`.
       Test: `python -m core.stt clip.wav` prints text and latency; unit test on a TTS-generated fixture.
 - [ ] **A4 · Text-to-speech.** `core/tts.py`: Piper `en_US-lessac`; `speak()` plus `stop_speaking()` that cuts audio mid-sentence.
       Test: `python -m core.tts "hello"`; a second thread calling `stop_speaking()` ends playback in under 200 ms.
