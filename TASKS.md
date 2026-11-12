@@ -19,7 +19,7 @@ Run commands from the repo root with the `.venv` active.
       Test: `python -m core.vad` saves `data/last.wav` and prints its length; unit test on a synthetic clip.
 - [x] **A3 · Speech-to-text.** `core/stt.py`: faster-whisper `base`, int8, CPU; WAV in, `Utterance` out; models download to `data/models/`.
       Test: `python -m core.stt clip.wav` prints text and latency; unit test on a TTS-generated fixture.
-- [ ] **A4 · Text-to-speech.** `core/tts.py`: Piper `en_US-lessac`; `speak()` plus `stop_speaking()` that cuts audio mid-sentence.
+- [x] **A4 · Text-to-speech.** `core/tts.py`: English voice is Kokoro `af_bella` (natural, 24 kHz); Piper is the fallback and will carry Malayalam in Phase 3. `speak()` streams sentence by sentence; `stop_speaking()` cuts audio mid-sentence.
       Test: `python -m core.tts "hello"`; a second thread calling `stop_speaking()` ends playback in under 200 ms.
 - [ ] **A5 · Train the "Hey Zeno" wake word.** Train a custom openWakeWord model in the project's training notebook (off-repo, e.g. Colab; PyTorch is used there only, never here). Commit only the small `assets/wakeword/hey_zeno.onnx`. Record real clips of yourself and your partner for testing; keep them out of git.
       Test: `python -m core.wake --file clip.wav` prints the score; at least 90% of "Hey Zeno" clips trigger, none of 20 other-phrase clips do.
