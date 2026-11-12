@@ -16,3 +16,9 @@ powershell -ExecutionPolicy Bypass -File scripts\setup.ps1 --pull   # venv, depe
 ```
 
 Requires Python 3.11 (64-bit), Git and Ollama. Status: early development, nothing usable yet.
+
+## License
+
+Zeno is free software under the [GNU GPL v3.0 or later](LICENSE). You can use, change and share it,
+and anything you distribute based on it must stay under the same license. It uses Piper
+(`piper-tts`, GPL-3.0-or-later) for speech, which is why the GPL is the right fit.

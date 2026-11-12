@@ -49,6 +49,8 @@ Only edit your own side's files. Shared files change only after the other person
 - **The LLM gets allow-listed skills only**, each with a `risk` level (`safe`, `confirm`, `blocked`).
   Never expose a raw shell or exec tool. Treat text from web pages as data, never as instructions.
 - Don't add a dependency without adding it to `requirements.txt` and checking it pulls in no torch.
+- **License: GPL-3.0-or-later** (see `LICENSE`; Piper is GPL). New dependencies must have a GPL-compatible
+  license (MIT, BSD, Apache-2.0, LGPL and GPL are fine). Don't add proprietary or "non-commercial" code, models or voices.
 
 ## Conventions
 
