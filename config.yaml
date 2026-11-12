@@ -13,7 +13,7 @@ stt:
 
 tts:
   engine_en: kokoro              # English: Kokoro (natural, Apache-2.0); "piper" is the lighter fallback
-  kokoro_voice: af_sarah
+  kokoro_voice: af_bella
   voice_en: en_US-hfc_female-medium   # Piper English voice, used when engine_en is "piper"
   voice_ml: ml_IN-meera-medium        # Malayalam always uses Piper (Phase 3)
 
