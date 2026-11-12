@@ -12,8 +12,10 @@ stt:
   device: cpu
 
 tts:
-  voice_en: en_US-lessac-medium
-  voice_ml: ml_IN-meera-medium
+  engine_en: kokoro              # English: Kokoro (natural, Apache-2.0); "piper" is the lighter fallback
+  kokoro_voice: af_sarah
+  voice_en: en_US-hfc_female-medium   # Piper English voice, used when engine_en is "piper"
+  voice_ml: ml_IN-meera-medium        # Malayalam always uses Piper (Phase 3)
 
 brain:
   ollama_url: http://localhost:11434/v1

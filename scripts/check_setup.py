@@ -98,7 +98,7 @@ def check_packages() -> None:
         report(FAIL, "No PyTorch", "torch is installed. Remove it: pip uninstall torch (see CLAUDE.md).")
     else:
         report(OK, "No PyTorch", "torch not installed")
-    wanted = ["numpy", "sounddevice", "onnxruntime", "faster_whisper", "openwakeword", "openai", "yaml", "pytest"]
+    wanted = ["numpy", "sounddevice", "onnxruntime", "faster_whisper", "openwakeword", "piper", "kokoro_onnx", "openai", "yaml", "pytest"]
     missing = [m for m in wanted if importlib.util.find_spec(m) is None]
     if missing:
         report(WARN, "Packages", "missing: " + ", ".join(missing) + ". Run scripts\\setup.ps1.")
